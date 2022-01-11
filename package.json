@@ -5,8 +5,11 @@
   "author": "haoda",
   "license": "Apache-2.0",
   "dependencies": {
+    "is-reachable": "^5.1.1",
+    "node-schedule": "^2.1.0",
     "qrcode-terminal": "^0.12.0",
     "wechaty": "^0.56.6",
+    "wechaty-puppet": "^0.34.1",
     "wechaty-puppet-padlocal": "^0.2.31"
   },
   "devDependencies": {
