@@ -1,3 +1,5 @@
+import {ServiceHost} from "../services/address";
+
 const isReachable = require('is-reachable')
 const fs = require('fs')
 
@@ -15,12 +17,18 @@ export default class Job {
     this.port = port
     this.host = host
     this.address = `http://${this.host}:${this.port}`
-    this.fid = `${this.name}.${this.host}.${port}.id`
+    this.fid = `sid/${this.name}.${this.host}.${port}.id`
+  }
+
+  static fromHost(host: ServiceHost) {
+    return new Job(host.name, host.env, host.ip, host.port)
   }
 
    public updateStatus(callback: Function = console.info) {
     fs.access(this.fid, ((err: boolean) => {
-      isReachable(this.address).then((reachable: boolean) => {
+      isReachable(this.address, {
+        timeout: 5000
+      }).then((reachable: boolean) => {
         if(err && reachable){ //进程文件不存在且当前网络可达，说明系统刚启动
           fs.closeSync(fs.openSync(this.fid, 'w')) //新建进程文件，并打印日志
           callback(`${this.env}-${this.name}已经更新`)
@@ -32,5 +40,17 @@ export default class Job {
         }
       })
     }))
+  }
+
+  public initStatus() {
+    isReachable(this.address, {
+      timeout: 5000
+    }).then((reachable: boolean) => {
+      if(reachable) {
+        fs.closeSync(fs.openSync(this.fid, 'w')) //新建进程文件
+      }else{
+        fs.unlinkSync(this.fid)
+      }
+    })
   }
 }

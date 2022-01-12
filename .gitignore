@@ -1,9 +1,7 @@
 node_modules
-#!/config/
-/config/*
-!/config/default.json
-
+config/scheduler.json
 .idea
 .DS_Store
 package-lock.json
 yarn.lock
+sid
