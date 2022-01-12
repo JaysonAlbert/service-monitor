@@ -1,17 +1,17 @@
 import {ServiceHost} from "../services/address";
+import {isReachable} from "./util";
 
-const isReachable = require('is-reachable')
 const fs = require('fs')
 
 export default class Job {
-  public readonly name : String
-  public readonly env: String
-  public readonly host: String
-  public readonly port: String
-  public readonly address: String
-  public readonly fid: String
+  public readonly name : string
+  public readonly env: string
+  public readonly host: string
+  public readonly port: string
+  public readonly address: string
+  public readonly fid: string
 
-  constructor(name: String, env: String, host: String, port: String) {
+  constructor(name: string, env: string, host: string, port: string) {
     this.name = name
     this.env = env
     this.port = port
@@ -30,9 +30,7 @@ export default class Job {
 
    public updateStatus(callback: Function = console.info) {
     fs.access(this.fid, ((err: boolean) => {
-      isReachable(this.address, {
-        timeout: 5000
-      }).then((reachable: boolean) => {
+      isReachable(this).then((reachable: boolean) => {
         if(err && reachable){ //进程文件不存在且当前网络可达，说明系统刚启动
           fs.closeSync(fs.openSync(this.fid, 'w')) //新建进程文件，并打印日志
           callback(`${this.env}-${this.name}已经更新`)
@@ -47,13 +45,15 @@ export default class Job {
   }
 
   public initStatus() {
-    isReachable(this.address, {
-      timeout: 5000
-    }).then((reachable: boolean) => {
+    isReachable(this).then((reachable: boolean) => {
       if(reachable) {
         fs.closeSync(fs.openSync(this.fid, 'w')) //新建进程文件
       }else{
-        fs.unlinkSync(this.fid)
+        fs.access(this.fid, ((err: boolean) => {
+          if(!err){
+            fs.unlinkSync(this.fid)
+          }
+        }))
       }
     })
   }

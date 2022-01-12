@@ -3,6 +3,7 @@ import {appAddress, ServiceHost} from "./services/address";
 import Job from "./monitor/job";
 import {JobScheduler} from "./monitor/job-scheduler";
 import {group} from "./config/config";
+import moment from "moment";
 
 
 async function onLogin(user: Contact) {
@@ -16,7 +17,7 @@ async function onLogin(user: Contact) {
         if (contact) {
             contact.say(v)
         } else {
-            console.log(v)
+            console.log(moment().format('YYYYmmdd hh:mm:ss') + ' ' + v)
         }
     })
 }
@@ -53,7 +54,12 @@ const bot = new Wechaty({
             return
         }
 
-        log.info("TestBot", `on message: ${message.toString()}`);
+        try{
+            log.info("TestBot", `on message: ${message.toString()}`);
+        }catch (error) {
+            log.error("",error)
+        }
+
         if (message.type() !== Message.Type.Text) {
             return
         }

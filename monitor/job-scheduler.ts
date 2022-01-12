@@ -9,7 +9,7 @@ class JobScheduler{
   public readonly date: String
   public jobs: Array<Job> = []
   public jobSet: Set<string> = new Set()
-  public instance: any = null;
+  public static instance: any = null;
 
   constructor(date: String) {
     this.date = date
@@ -25,24 +25,26 @@ class JobScheduler{
   }
 
   static Instance() {
-    let jobScheduler: JobScheduler;
+    if(this.instance){
+      return this.instance
+    }
     try {
-      jobScheduler = JobScheduler.fromConfig()
-      console.log(`从配置文件初始化成功: ${JSON.stringify(jobScheduler)}`)
+      this.instance = JobScheduler.fromConfig()
+      console.log(`从配置文件初始化成功: ${JSON.stringify(this.instance)}`)
     } catch (err) {
       console.log(`从配置配置文件初始化失败...`)
-      jobScheduler = new JobScheduler('*/5 * * * * *')
+      this.instance = new JobScheduler('*/10 * * * * *')
     }
-    return jobScheduler;
+    return this.instance;
   }
 
   static fromConfig() {
     const config = JSON.parse(fs.readFileSync(confPath))
-    const jobScheduler = new JobScheduler(config.date)
+    const local = new JobScheduler(config.date)
     for(let job of config.jobs){
-      jobScheduler.addJob(new Job(job.name, job.env, job.host, job.port))
+      local.addJob(new Job(job.name, job.env, job.host, job.port))
     }
-    return jobScheduler
+    return local
   }
 
   listJobs(){
