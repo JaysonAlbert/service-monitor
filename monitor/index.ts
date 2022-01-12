@@ -1,7 +1,6 @@
-import JobScheduler from "./job-scheduler";
 import Job from "./job";
+import {JobScheduler} from "./job-scheduler";
 
-const jobScheduler = new JobScheduler('*/5 * * * * *')
 const job = new Job('csp', 'dev', 'localhost', '9527')
-jobScheduler.addJob(job)
-jobScheduler.schedule()
+JobScheduler.addJob(job)
+JobScheduler.schedule()

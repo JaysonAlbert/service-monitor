@@ -65,11 +65,12 @@ const bot = new Wechaty({
             const msg = message.text();
             if (msg.startsWith('#监控')) {
                 const l = msg.split(' ')
-                appAddress(l[1], l[2]).then((host: ServiceHost) => {
+                appAddress(l[2], l[1]).then((host: ServiceHost) => {
                     const job = Job.fromHost(host)
                     console.log(`正在添加监控${JSON.stringify(job)}`)
                     JobScheduler.addJob(job)
                     JobScheduler.save()
+                    message.say('监控添加成功')
                 }, error => {
                     if(error&&error.msg){
                         message.say(error.msg)
@@ -79,8 +80,8 @@ const bot = new Wechaty({
                 })
             } else if (msg.startsWith('#help') || msg.startsWith('#帮助')) {
                 message.room()?.say(
-                    '1. #监控　[系统名]　[环境]\n　' +
-                    '   eg: #监控 csp uat \\n' +
+                    '1. #监控　[环境]　[系统名]\n　' +
+                    '   eg: #监控 uat csp \n' +
                     '2. #列表')
             } else if (msg.startsWith('#list') || msg.startsWith('#列表')) {
                 message.room()?.say(`#已监控系统：\n${JobScheduler.listJobs()}`)

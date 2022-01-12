@@ -8,6 +8,7 @@ const confPath = "config/scheduler.json"
 class JobScheduler{
   public readonly date: String
   public jobs: Array<Job> = []
+  public jobSet: Set<string> = new Set()
   public instance: any = null;
 
   constructor(date: String) {
@@ -15,7 +16,11 @@ class JobScheduler{
   }
 
   public addJob(job: Job) {
+    if(this.jobSet.has(job.key())){
+      return
+    }
     this.jobs.push(job)
+    this.jobSet.add(job.key())
     job.initStatus()
   }
 

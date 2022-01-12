@@ -24,6 +24,10 @@ export default class Job {
     return new Job(host.name, host.env, host.ip, host.port)
   }
 
+  public key(){
+    return this.env + '-' + this.name
+  }
+
    public updateStatus(callback: Function = console.info) {
     fs.access(this.fid, ((err: boolean) => {
       isReachable(this.address, {

@@ -5,6 +5,7 @@ import {mode} from "./config/config";
 
 
 
+// @ts-ignore
 if(mode === 'local'){
     JobScheduler.schedule()
 }else{
