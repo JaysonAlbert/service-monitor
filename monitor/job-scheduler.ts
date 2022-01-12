@@ -3,7 +3,7 @@ const fs = require("fs")
 
 const schedule = require('node-schedule')
 
-const confPath = "config/config.json"
+const confPath = "config/scheduler.json"
 
 class JobScheduler{
   public readonly date: String
