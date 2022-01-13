@@ -93,7 +93,7 @@ const bot = new Wechaty({
                         console.log(`正在添加监控${JSON.stringify(job)}`)
                         JobScheduler.addJob(job)
                         JobScheduler.save()
-                        message.say('监控添加成功')
+                        message.say('监控添加成功คิดถึง')
                     }, error => {
                         if(error&&error.msg){
                             message.say(error.msg)
