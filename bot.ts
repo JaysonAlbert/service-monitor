@@ -1,29 +1,37 @@
-import {Contact, log, Message, ScanStatus, Wechaty} from "wechaty";
+import {Contact, log, Message, Room, ScanStatus, Wechaty} from "wechaty";
 import {appAddress, ServiceHost} from "./services/address";
 import Job from "./monitor/job";
 import {JobScheduler} from "./monitor/job-scheduler";
-import {group} from "./config/config";
+import {groups} from "./config/config";
 import moment from "moment";
 
 
 const help = '1. #监控　[环境]　[系统名]\n　' +
-            '\teg: #监控 uat csp \n\n' +
-            '2. #监控 [环境]　[系统名] [地址]　[端口]\n'　+
-            '\teg: #监控 sit newecc 10.50.115.61 7679\n\n' +
-            '3. #列表 \n\n'　+
-            '\t注：eureka项目使用第一种自动获取地址\n' +
-            '\t\t老项目使用第二种คิดถึง'
+    '\teg: #监控 uat csp \n\n' +
+    '2. #监控 [环境]　[系统名] [地址]　[端口]\n' +
+    '\teg: #监控 sit newecc 10.50.115.61 7679\n\n' +
+    '3. #列表 \n\n' +
+    '\t注：eureka项目使用第一种自动获取地址\n' +
+    '\t\t老项目使用第二种คิดถึง'
 
 async function onLogin(user: Contact) {
     log.info('StarterBot', '%s login', user)
-    let contact = await bot.Room.find({'topic': group})
-    if (!contact) {
-        console.log(`无法找到联系人[${group}]`)
+    const contacts: (Room | null)[] = []
+    for(const group of groups){
+        let contact = await bot.Room.find({'topic': group})
+        if (!contact) {
+            console.log(`无法找到联系人[${group}]`)
+        }
+        contacts.push(contact)
     }
+
     console.log("正在添加监控器...")
     JobScheduler.schedule((v: string) => {
-        if (contact) {
-            contact.say(v)
+        if (contacts.length != 0) {
+            for(const contact of contacts){
+                contact?.say(v)
+            }
+
         } else {
             console.log(moment().format('YYYYmmDD hh:mm:ss') + ' ' + v)
         }
@@ -73,7 +81,7 @@ const bot = new Wechaty({
         }
 
         message.room()?.topic().then(topic => {
-            if (topic != group) {
+            if (!groups.includes(topic)) {
                 return
             }
             const msg = message.text();
