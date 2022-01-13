@@ -1,4 +1,3 @@
-import axios from "axios";
 import Job from "./job";
 
 const { Telnet } = require('telnet-client')

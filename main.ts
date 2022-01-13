@@ -9,7 +9,7 @@ import moment from "moment";
 // @ts-ignore
 if(mode === 'local'){
     JobScheduler.schedule((v: string) => {
-        console.log(moment().format('YYYYmmdd hh:mm:ss') + ' ' + v)
+        console.log(moment().format('YYYYmmDD hh:mm:ss') + ' ' + v)
     })
 }else{
     bot.start().then(() => {
