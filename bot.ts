@@ -29,8 +29,9 @@ async function onLogin(user: Contact) {
         let contact = await bot.Room.find({'topic': group})
         if (!contact) {
             console.log(`无法找到联系人[${group}]`)
+        }else{
+            contacts.push(contact)
         }
-        contacts.push(contact)
     }
 
     console.log("正在添加监控器...")
@@ -49,9 +50,9 @@ async function onLogin(user: Contact) {
 const bot = WechatyBuilder.build({
     name: 'service-monitor',
     puppet: 'wechaty-puppet-wechat'
-})
+});
 
-    .on("scan", (qrcode: string, status: ScanStatus) => {
+    bot.on("scan", (qrcode: string, status: ScanStatus) => {
         if (status === ScanStatus.Waiting || status === ScanStatus.Timeout) {
             const qrcodeImageUrl = [
                 'https://wechaty.js.org/qrcode/',
@@ -68,8 +69,8 @@ const bot = WechatyBuilder.build({
 
     .on("login", onLogin)
 
-    .on("logout", (user: Contact, reason: string) => {
-        log.info("TestBot", `${user} logout, reason: ${reason}`);
+    .on("logout", (user: Contact) => {
+        log.info("TestBot", `${user} logout`);
     })
 
     .on("message", async (message: Message) => {
