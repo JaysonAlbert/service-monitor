@@ -78,12 +78,6 @@ const bot = WechatyBuilder.build({
             return
         }
 
-        try {
-            log.info("TestBot", `on message: ${message.toString()}`);
-        } catch (error) {
-            log.error("", error)
-        }
-
         if (message.type() !== PUPPET.types.Message.Text) {
             return
         }
