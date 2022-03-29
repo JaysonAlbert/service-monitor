@@ -5,3 +5,4 @@ config/scheduler.json
 package-lock.json
 yarn.lock
 sid
+service-monitor.memory-card.json

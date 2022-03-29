@@ -1,19 +1,14 @@
-FROM node:16
+FROM wechaty/wechaty
 
-# Create app directory
-WORKDIR /usr/src/app
+RUN mkdir -p /home/node/app/node_modules
+WORKDIR /home/node/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+RUN npm install -g typescript
+RUN npm install -g ts-node
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
 COPY . .
 
-EXPOSE 8080
-CMD [ "npm", "run", "demo" ]
+RUN npm install
+RUN npm i --save-dev @types/qrcode-terminal
+
+CMD [ "npm", "rum", "demo"]
