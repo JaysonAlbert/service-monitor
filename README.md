@@ -1,5 +1,7 @@
 ## How To Use
 
+注：web模式使用web分支
+
 ### 1. check node version, need to be $ge than v12.0.0
 ```
 node --version // >= v12.0.0
