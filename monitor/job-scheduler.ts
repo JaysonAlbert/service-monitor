@@ -33,7 +33,7 @@ class JobScheduler{
       console.log(`从配置文件初始化成功: ${JSON.stringify(this.instance)}`)
     } catch (err) {
       console.log(`从配置配置文件初始化失败...`)
-      this.instance = new JobScheduler('*/10 * * * * *')
+      this.instance = new JobScheduler('*/15 * * * * *')
     }
     return this.instance;
   }

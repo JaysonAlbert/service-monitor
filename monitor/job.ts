@@ -37,8 +37,14 @@ export default class Job {
         }
 
         if(!err && !reachable) { //进程文件存在且当前网络不可达，说明系统刚停止
-          fs.unlinkSync(this.fid)
-          callback(`${this.env}-${this.name}已经停止`)
+          setTimeout(()=>{ //若５ｓ中后网络依然不可达，确认系统停止．（防止因网络抖动问题导致异常报警）
+            isReachable(this).then((reachable2: boolean) => {
+              if(!reachable2){
+                fs.unlinkSync(this.fid)
+                callback(`${this.env}-${this.name}已经停止`)
+              }
+            })
+          },5000)
         }
       })
     }))
