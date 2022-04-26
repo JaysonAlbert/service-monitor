@@ -9,9 +9,10 @@ class JobScheduler{
   public readonly date: String
   public jobs: Array<Job> = []
   public jobSet: Set<string> = new Set()
+  public static gitlabJob: Job = new Job("gitlab","prod","gitlab.hfffund.com","80");
   public static instance: any = null;
 
-  constructor(date: String) {
+  private constructor(date: String) {
     this.date = date
   }
 
@@ -44,6 +45,7 @@ class JobScheduler{
     for(let job of config.jobs){
       local.addJob(new Job(job.name, job.env, job.host, job.port))
     }
+    JobScheduler.gitlabJob = new Job(config.gitlabJob.name, config.gitlabJob.env, config.gitlabJob.host, config.gitlabJob.port)
     return local
   }
 
@@ -76,5 +78,6 @@ class JobScheduler{
 const jobScheduler =　JobScheduler.Instance();
 
 export {
-  jobScheduler as JobScheduler
+  jobScheduler as jobScheduler,
+  JobScheduler as JobScheduler
 }

@@ -8,7 +8,7 @@ import {
 import qrcodeTerminal from 'qrcode-terminal'
 import {appAddress, ServiceHost} from "./services/address";
 import Job from "./monitor/job";
-import {JobScheduler} from "./monitor/job-scheduler";
+import {jobScheduler} from "./monitor/job-scheduler";
 import {groups} from "./config/config";
 import moment from "moment";
 import * as PUPPET from "wechaty-puppet";
@@ -35,7 +35,7 @@ async function onLogin(user: Contact) {
     }
 
     console.log("正在添加监控器...")
-    JobScheduler.schedule((v: string) => {
+    jobScheduler.schedule((v: string) => {
         if (contacts.length != 0) {
             for (const contact of contacts) {
                 contact?.say(v)
@@ -93,8 +93,8 @@ const bot = WechatyBuilder.build({
                     appAddress(l[2], l[1]).then((host: ServiceHost) => {
                         const job = Job.fromHost(host)
                         console.log(`正在添加监控${JSON.stringify(job)}`)
-                        JobScheduler.addJob(job)
-                        JobScheduler.save()
+                        jobScheduler.addJob(job)
+                        jobScheduler.save()
                         message.say('监控添加成功คิดถึง')
                     }, error => {
                         if (error && error.msg) {
@@ -105,8 +105,8 @@ const bot = WechatyBuilder.build({
                     })
                 } else if (l.length === 5) {
                     const job = new Job(l[2], l[1], l[3], l[4])
-                    JobScheduler.addJob(job)
-                    JobScheduler.save()
+                    jobScheduler.addJob(job)
+                    jobScheduler.save()
                     message.say('监控添加成功คิดถึง')
                 } else {
                     message.say('指令解析失败\n\n\n' + help)
@@ -117,7 +117,7 @@ const bot = WechatyBuilder.build({
                     help
                 )
             } else if (msg.startsWith('#list') || msg.startsWith('#列表')) {
-                message.room()?.say(`#已监控系统：\n${JobScheduler.listJobs()}`)
+                message.room()?.say(`#已监控系统：\n${jobScheduler.listJobs()}`)
             }
         }).catch((error: Sayable) => {
             message.say(error)

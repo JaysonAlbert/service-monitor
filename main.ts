@@ -1,5 +1,5 @@
 import { log } from "wechaty";
-import { JobScheduler } from "./monitor/job-scheduler";
+import { jobScheduler } from "./monitor/job-scheduler";
 import { bot } from "./bot";
 import {mode} from "./config/config";
 import moment from "moment";
@@ -8,7 +8,7 @@ import moment from "moment";
 
 // @ts-ignore
 if(mode === 'local'){
-    JobScheduler.schedule((v: string) => {
+    jobScheduler.schedule((v: string) => {
         console.log(moment().format('YYYYmmDD hh:mm:ss') + ' ' + v)
     })
 }else{
