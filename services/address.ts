@@ -47,5 +47,3 @@ export function appAddress(app: string, env: string) {
         })
     })
 }
-
-appAddress("csp", "sit")
