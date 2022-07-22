@@ -9,7 +9,7 @@ export function isReachable(job: Job) {
             host: job.host,
             port: job.port,
             negotiationMandatory: false,
-            timeout: 1500
+            timeout: 5000
         }).then(()=>{
             resolve(true)
         }).catch((error: any) => {
