@@ -12,7 +12,7 @@ import {jobScheduler} from "./monitor/job-scheduler";
 import {groups} from "./config/config";
 import moment from "moment";
 import * as PUPPET from "wechaty-puppet";
-
+import { localMonitor } from './monitor/util';
 
 const help = '1. #监控　[环境]　[系统名]\n　' +
     '\teg: #监控 uat csp \n\n' +
@@ -41,9 +41,9 @@ async function onLogin(user: Contact) {
                 contact?.say(v)
             }
 
-        } else {
-            console.log(moment().format('YYYYmmDD hh:mm:ss') + ' ' + v)
-        }
+        } 
+
+        localMonitor(v)
     })
 }
 
