@@ -27,7 +27,7 @@ export function localMonitor(msg: String) {
     var long_now = moment().format('YYYYMMDD HH:mm:ss')
 
     if(is_linux){
-        exec(`which notify-send > /dev/null 2>&1 && notify-send -u critical "${short_now} ${msg}"`,(err: any,stdout: any,stderr: any) => {
+        exec(`which notify-send > /dev/null 2>&1 && notify-send -u critical "${short_now} ${msg}" && logger "${short_now} ${msg}"`,(err: any,stdout: any,stderr: any) => {
             if(err){
                 console.error(err)
             }
