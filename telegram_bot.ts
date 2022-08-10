@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = '1234:abcd';
+const token = '5531268654:AAGusQJjK7_26faFprqGhp0UESDexxljE_I';
 
 class TBot{
   private token: String;
@@ -56,7 +56,6 @@ class TBot{
         this.bot.sendMessage(chatId,'指令解析失败\n\n\n' + help)
       }
     
-      this.bot.sendMessage(chatId, help);
     });
     
     this.bot.onText(/\/(list)|(列表)/, (msg: any, match: any) => {
