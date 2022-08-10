@@ -9,7 +9,9 @@ class JobScheduler{
   public readonly date: String
   public jobs: Array<Job> = []
   public jobSet: Set<string> = new Set()
-  public static gitlabJob: Job = new Job("gitlab","prod","gitlab.hfffund.com","80");
+  public chatIds: Array<String> = []
+  public chatIdSet: Set<String> = new Set()
+  public gitlabJob: any = null;
   public static instance: any = null;
 
   private constructor(date: String) {
@@ -25,6 +27,12 @@ class JobScheduler{
     job.initStatus()
   }
 
+  public addChatId(chatId: String) {
+    this.chatIdSet.add(chatId)
+    this.chatIds = Array.from(this.chatIdSet.values())
+    this.save()
+  }
+
   static Instance() {
     if(this.instance){
       return this.instance
@@ -33,7 +41,7 @@ class JobScheduler{
       this.instance = JobScheduler.fromConfig()
       console.log(`从配置文件初始化成功: ${JSON.stringify(this.instance)}`)
     } catch (err) {
-      console.log(`从配置配置文件初始化失败...`)
+      console.log(`从配置配置文件初始化失败...`,err)
       this.instance = new JobScheduler('*/15 * * * * *')
     }
     return this.instance;
@@ -45,7 +53,11 @@ class JobScheduler{
     for(let job of config.jobs){
       local.addJob(new Job(job.name, job.env, job.host, job.port))
     }
-    JobScheduler.gitlabJob = new Job(config.gitlabJob.name, config.gitlabJob.env, config.gitlabJob.host, config.gitlabJob.port)
+
+    local.gitlabJob = new Job(config.gitlabJob.name, config.gitlabJob.env, config.gitlabJob.host, config.gitlabJob.port)
+    
+    local.chatIds = config.chatIds || []
+    local.chatIdSet = new Set(local.chatIds)
     return local
   }
 

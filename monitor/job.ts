@@ -1,6 +1,6 @@
 import {ServiceHost} from "../services/address";
 import {isReachable} from "./util";
-import {JobScheduler} from "./job-scheduler";
+import {jobScheduler, JobScheduler} from "./job-scheduler";
 
 const fs = require('fs')
 
@@ -38,7 +38,7 @@ export default class Job {
         }
 
         if(!err && !reachable) { //进程文件存在且当前网络不可达，且gitlab可达，说明系统刚停止
-          isReachable(JobScheduler.gitlabJob).then((reachable2: boolean) => {
+          isReachable(jobScheduler.gitlabJob).then((reachable2: boolean) => {
             if(reachable2){
               fs.unlinkSync(this.fid)
               callback(`${this.env}-${this.name}已经停止`)
