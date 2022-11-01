@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = '5531268654:AAGusQJjK7_26faFprqGhp0UESDexxljE_I';
+const token = 'your bot token';
 
 class TBot{
   private token: String;
